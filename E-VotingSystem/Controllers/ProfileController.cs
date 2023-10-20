@@ -26,7 +26,7 @@ namespace E_VotingSystem.Controllers
 
         [HttpPost]
        
-        public IActionResult CastVote()
+        public IActionResult Category()
         {
             // Your logic for casting a vote goes here if needed.
 
@@ -45,6 +45,16 @@ namespace E_VotingSystem.Controllers
             return RedirectToAction("Index", "Account");
         }
 
+
+        [HttpPost]
+        public IActionResult CastVote(List<ModCandidate> l_ListModCandidates)
+        {
+            l_ListModCandidates.Count();
+            // Perform any necessary logout actions here, such as clearing user data or session.
+
+            // Redirect to the "Index" action of the "Account" controller
+            return RedirectToAction("Index", "Account");
+        }
 
 
         [HttpGet]

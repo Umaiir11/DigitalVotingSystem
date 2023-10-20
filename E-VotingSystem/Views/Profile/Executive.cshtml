@@ -7,9 +7,6 @@
 }
 
 
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,64 +19,57 @@
     <title>Executive</title>
 </head>
 <body>
-    <div class="container">
-        <h4 class="text-center mt-4">Executive</h4> <!-- Centered and spaced from the top -->
-
-        <div class="row">
-            @foreach (var candidate in Model)
-            {
-                <div class="col-4">
-                    <div class="card mb-3">
-                        <div class="card-header bg-black text-white">
-                            <strong>@candidate.CandidateName</strong>
-                        </div>
-                        <img src="https://as1.ftcdn.net/v2/jpg/02/42/45/90/1000_F_242459076_53ffNaKxcGS1ioScWiSt50e9ltwvynqt.jpg" alt="Image Description" class="circular-image">
-                        <div class="card-body">
-                            <p class="card-text">
-                                <strong>Membership No:</strong> @candidate.MemberShipNo<br>
-                                <strong>Mobile No:</strong> @candidate.MobileNo<br>
-                                <strong>Nominate For:</strong> @candidate.NominateFor<br>
-                                <strong>Region:</strong> @candidate.Region
-                            </p>
-                        </div>
-                        <div class="text-left">
-                            <form method="post" asp-controller="Profile" asp-action="CastVote">
-                                <input type="hidden" name="candidateId" value="@candidate.PKGUID" />
+    <form method="post" asp-controller="Profile" asp-action="CastVote">
+        <div class="container">
+            <h4 class="text-center mt-4">Executive</h4>
+            <div class="row">
+                @for (var i = 0; i < Model.Count; i++)
+                {
+                    var candidate = Model[i];
+                    <div class="col-4">
+                        <div class="card mb-3">
+                            <div class="card-header bg-black text-white">
+                                <strong>@candidate.CandidateName</strong>
+                            </div>
+                            <img src="https://as1.ftcdn.net/v2/jpg/02/42/45/90/1000_F_242459076_53ffNaKxcGS1ioScWiSt50e9ltwvynqt.jpg" alt="Image Description" class="circular-image">
+                            <div class="card-body">
+                                <p class="card-text">
+                                    <strong>Membership No:</strong> @candidate.MemberShipNo<br>
+                                    <strong>Mobile No:</strong> @candidate.MobileNo<br>
+                                    <strong>Nominate For:</strong> @candidate.NominateFor<br>
+                                    <strong>Region:</strong> @candidate.Region
+                                </p>
+                            </div>
+                            <div class="text-left">
                                 <div class="form-check form-check-inline">
-                                    <input type="checkbox" class="form-check-input" name="castVote" id="castVote_@candidate.PKGUID">
-                                    <label class="form-check-label" for="castVote_@candidate.PKGUID">Cast Vote</label>
+                                    <input type="hidden" asp-for="@Model[i].PKGUID" />
+                                    <input type="hidden" asp-for="@Model[i].CandidateName" />
+                                    <input type="hidden" asp-for="@Model[i].NominateFor" />
+                                    <input type="checkbox" class="form-check-input" asp-for="@Model[i].IsVote" id="castVote_@Model[i].PKGUID">
+                                    <label class="form-check-label" for="castVote_@Model[i].PKGUID">Cast Vote</label>
                                 </div>
-                                <button type="submit" class="btn btn-primary" style="display: none;">Cast Vote</button>
-                            </form>
+                            </div>
                         </div>
                     </div>
-                </div>
-            }
+                }
+            </div>
         </div>
-    </div>
-
-    <div class="text-center mt-4">
-        <form method="post" asp-controller="Profile" asp-action="SubmitVote">
+        <div class="text-center mt-4">
             <button type="submit" class="btn btn-success">Submit Votes</button>
-        </form>
-    </div>
+        </div>
+    </form>
     <div class="text-center mt-4">
         <!-- Centered and spaced from the top -->
         <form method="post" asp-controller="Profile" asp-action="Logout">
             <button type="submit" class="btn btn-primary">Logout</button>
         </form>
     </div>
-   
-
     <!--//copyright-->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 </body>
-
 </html>
-
-
 
 
 

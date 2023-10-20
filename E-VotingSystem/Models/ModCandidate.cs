@@ -14,6 +14,7 @@
         public string? NominateFor { get; set; }
         public string? Region { get; set; }
         public string? ImageLocation { get; set; }
+        public bool IsVote { get; set; }
 
     }
 }
