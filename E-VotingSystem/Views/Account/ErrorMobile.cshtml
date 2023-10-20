@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewData["Title"] = "ErrorMobile";
+    Layout = null;
+}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - E_VotingSystem</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/errorstyle.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/errorfont-awesome.min.css" asp-append-version="true" />
+    <title>User Profile</title>
+</head>
+<body>
+
+	<div class="error_main">
+		<div class="content">
+			<h1 class="h1" >Sorry!!</h1>
+			<div class="error_content">
+				<span class="fa fa-frown-o"></span>
+				<h2>We Couldn't Find Your Number</h2>
+				<p>Unfortunately, we do not have your number in our database. To access our services, please update your phone number in our portal. Once your number is verified, we will grant you access to your account.</p>
+				<form action="#" method="post">
+					<div class="clear"> </div>
+				</form>
+				<a class="b-home" href="@Url.Action("Index", "Account")">Back to Home</a>
+			</div>
+			
+		</div>
+	</div>
+
+
+
+
+
+    <!--//copyright-->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,92 @@
+﻿@model ModUser
+@{
+    ViewData["Title"] = "Index";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification</title>
+    <!-- Bootstrap 5 CDN Link -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS Link -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="~/css/OTPstyle.css" asp-append-version="true" />
+    <!-- Include Firebase SDK scripts -->
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase.js"></script>
+
+    <!-- Your custom JavaScript code that uses Firebase -->
+    <script src="/js/OTPVerification.js"></script>
+
+
+
+
+
+     <script type="module">
+        // Initialize Firebase
+const firebaseConfig = {
+    apiKey: "AIzaSyDuZWP76P8ac8dRkO1Pcp1jNmyk41UN1nQ",
+    authDomain: "verifyotp-83a1b.firebaseapp.com",
+    projectId: "verifyotp-83a1b",
+    storageBucket: "verifyotp-83a1b.appspot.com",
+    messagingSenderId: "872984157025",
+    appId: "1:872984157025:web:8ba418056f885107718320",
+    measurementId: "G-LGF1LCPMJK"
+  };       
+  firebase.initializeApp(firebaseConfig);
+
+    </script>
+
+</head>
+<body>
+    <section class="wrapper">
+        <div class="container">
+            <div class="col-sm-8 offset-sm-2 col-lg-6 offset-lg-3 col-xl-6 offset-xl-3 text-center">
+                <div class="logo">
+                    <img src="./images/logo.png" class="img-fluid" alt="logo">
+                </div>
+                <form class="rounded bg-white shadow p-5">
+                    <h3 class="text-dark fw-bolder fs-4 mb-4">Two Step Verification</h3>
+
+                    <div class="form-group text-muted mb-4">
+                        <label for="verification-code">Enter the verification code we sent to:</label>
+                        <input type="text" id="number" class="form-control placeholder-input" placeholder="@Model.Mobile" value="@Model.Mobile">
+                       
+
+                        <div id="recaptcha-container" class="d-flex justify-content-center align-items-center mt-4"></div>
+
+
+                        <button type="button" onclick="phoneAuth()" class="btn btn-primary submit_btn my-4">Send OTP</button>
+                    </div>
+
+                    <div class="otp_input text-start mb-4">
+                        <label for="digit">Type your 6 digit security code</label>
+                        <div class="d-flex align-items-center justify-content-between mt-2">
+                            <input type="text" class="form-control1" placeholder="" maxlength="1">
+                            <input type="text" class="form-control2" placeholder="" maxlength="1">
+                            <input type="text" class="form-control3" placeholder="" maxlength="1">
+                            <input type="text" class="form-control4" placeholder="" maxlength="1">
+                            <input type="text" class="form-control5" placeholder="" maxlength="1">   
+                            <input type="text" class="form-control6" placeholder="" maxlength="1">
+                        </div>
+                    </div>
+                    <button type="button" onclick="verifyOTP()" class="btn btn-primary submit_btn my-4">Verify</button>
+
+                   
+
+                    <div class="fw-normal text-muted mb-2">
+                        Didn't get the code? <a href="#" class="text-primary fw-bold text-decoration-none">Resend</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+ 
+</body>
+</html>
