@@ -49,11 +49,39 @@ namespace E_VotingSystem.Controllers
         [HttpPost]
         public IActionResult CastVote(List<ModCandidate> l_ListModCandidates)
         {
+            List <ModVoter> l_ListVoterMode = new List<ModVoter>();    
+            ModUser l_ModLoggedInUser = HttpContext.Session.Get<ModUser>("LoggedinUser")!;
+            l_ListModCandidates = l_ListModCandidates.Where(x => x.IsVote == true).ToList();
             l_ListModCandidates.Count();
-            // Perform any necessary logout actions here, such as clearing user data or session.
 
-            // Redirect to the "Index" action of the "Account" controller
-            return RedirectToAction("Index", "Account");
+
+          
+
+            for (int i = 0; i < l_ListModCandidates.Count; i++) {
+
+                ModVoter lModVoter = new ModVoter {
+
+                    CandidateDID = l_ListModCandidates[i].PKGUID,
+                    UserDID = l_ModLoggedInUser.PKGUID,
+
+                    isVote = l_ListModCandidates[i].IsVote,
+                    VoteTimestamp = DateTime.Now,
+                    PKGUID= Guid.NewGuid().ToString()
+                                
+                };
+                l_ListVoterMode.Add(lModVoter);     
+
+
+            }
+
+            if (l_ListVoterMode.Count < 2)
+            {
+                // Set an error message in TempData to be displayed in the view
+
+                TempData["ErrorMessage"] = l_ModLoggedInUser.MemberName;
+                return RedirectToAction("Local");
+            }
+            return RedirectToAction("Index", "Profile");
         }
 
 
