@@ -74,7 +74,6 @@ namespace E_VotingSystem.Controllers
                 };
                 l_ListVoterMode.Add(lModVoter);
 
-
             }
 
             if (l_ListVoterMode.Count == 2)

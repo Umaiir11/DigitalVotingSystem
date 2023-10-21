@@ -25,7 +25,7 @@ namespace E_VotingSystem.Controllers
         [HttpPost]
         public ActionResult Verify(ModUser lModUser)
         {
-            DalInsertVoting l_DalInsertVoting =  new DalInsertVoting();
+            DalInsertVoting l_DalInsertVoting = new DalInsertVoting();
             FncConnectionString();
             l_SqlConnection.Open();
             l_SqlCommand.Connection = l_SqlConnection;
@@ -60,9 +60,10 @@ namespace E_VotingSystem.Controllers
                     return View("ErrorMobile");
                 }
 
-                int? lUserCount = l_DalInsertVoting.GetRecordCountForUser(l_ModloggedInUser.PKGUID!,l_SqlConnection.ConnectionString);
+                int? lUserCount = l_DalInsertVoting.GetRecordCountForUser(l_ModloggedInUser.PKGUID!, l_SqlConnection.ConnectionString);
 
-                if(lUserCount == 2) {
+                if (lUserCount == 2)
+                {
 
                     TempData["ErrorMessage"] = l_ModloggedInUser.MemberName;
                     return View("Index");
@@ -77,5 +78,22 @@ namespace E_VotingSystem.Controllers
             l_SqlConnection.Close();
             return View("ErrorPassword"); // Password is incorrect
         }
-    }
+
+        [HttpGet]
+
+        public ActionResult CandidateVoteInfo()
+        {
+            //db call
+
+            FncConnectionString();
+            DalInsertVoting l_dalInsertVoting = new DalInsertVoting();
+
+            List<ModCandidateVoteInfo> l_ListModCandidateVoteInfo = new List<ModCandidateVoteInfo>();
+            l_ListModCandidateVoteInfo = l_dalInsertVoting.GetResultOfCandidates(l_SqlConnection.ConnectionString);
+			return View("CandidateVoteInfo", l_ListModCandidateVoteInfo);
+
+		}
+
+
+	}
 }

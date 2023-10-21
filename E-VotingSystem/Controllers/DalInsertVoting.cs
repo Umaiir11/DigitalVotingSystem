@@ -8,27 +8,7 @@ namespace E_VotingSystem.Controllers
 {
     public class DalInsertVoting
     {
-        
-        public void InsertVoterRecord(ModVoter voter,string connectionString)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
 
-                string insertQuery = "INSERT INTO TBU_Voter (PKGUID, UserDID, CandidateDID, VoteTimestamp) " +
-                                     "VALUES (@PKGUID, @UserDID, @CandidateDID, @VoteTimestamp)";
-
-                using (SqlCommand command = new SqlCommand(insertQuery, connection))
-                {
-                    command.Parameters.Add("@PKGUID", SqlDbType.NVarChar).Value = voter.PKGUID;
-                    command.Parameters.Add("@UserDID", SqlDbType.NVarChar).Value = voter.UserDID;
-                    command.Parameters.Add("@CandidateDID", SqlDbType.NVarChar).Value = voter.CandidateDID;
-                    command.Parameters.Add("@VoteTimestamp", SqlDbType.DateTime).Value = voter.VoteTimestamp;
-
-                    command.ExecuteNonQuery();
-                }
-            }
-        }
         public int GetRecordCountForUser(string userDID, string connectionString)
         {
             int recordCount = 0;
@@ -54,21 +34,53 @@ namespace E_VotingSystem.Controllers
             return recordCount;
         }
 
-		public void InsertModVotersList(List<ModVoter> modVoterList, string sqlConnection)
-		{
-			var modVoterEnumerable = new IEnumerableVoter(); // Create an instance of IEnumerableItem
+        public List<ModCandidateVoteInfo> GetResultOfCandidates(string connectionString)
+        {
+            List<ModCandidateVoteInfo> candidateResults = new List<ModCandidateVoteInfo>();
 
-			foreach (ModVoter modVoter in modVoterList)
-			{
-				modVoterEnumerable.Add(modVoter);
-			}
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand("ResultOfCandidates", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        ModCandidateVoteInfo candidate = new ModCandidateVoteInfo
+                        {
+                            AutoID = reader["AutoID"] as int?,
+                            CandidateName = reader["CandidateName"] as string,
+                            VoteCount = reader["VoteCount"] as int?,
+                            ImageLocation = reader["ImageLocation"] as string,
+                            MemberShipNo = reader["MemberShipNo"] as string
+                        };
+
+                        candidateResults.Add(candidate);
+                    }
+                }
+            }
+
+            return candidateResults;
+        }
+
+        public void InsertModVotersList(List<ModVoter> modVoterList, string sqlConnection)
+        {
+            var modVoterEnumerable = new IEnumerableVoter(); // Create an instance of IEnumerableItem
+
+            foreach (ModVoter modVoter in modVoterList)
+            {
+                modVoterEnumerable.Add(modVoter);
+            }
 
             using (SqlConnection connection = new SqlConnection(sqlConnection))
             {
-				connection.Open(); // Open the connection
+                connection.Open(); // Open the connection
 
 
-				using (SqlCommand sqlCommand = new SqlCommand("Pr_TBU_Voter_CRUDm", connection))
+                using (SqlCommand sqlCommand = new SqlCommand("Pr_TBU_Voter_CRUDm", connection))
                 {
                     sqlCommand.CommandType = CommandType.StoredProcedure;
 
@@ -79,9 +91,9 @@ namespace E_VotingSystem.Controllers
                     sqlCommand.ExecuteNonQuery();
                 }
             }
-		}
+        }
 
-	}
+    }
 
 }
 

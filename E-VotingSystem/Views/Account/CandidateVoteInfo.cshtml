@@ -1,0 +1,70 @@
+﻿@model List<ModCandidateVoteInfo>
+@{
+    ViewData["Title"] = "CandidateVoteInfo";
+    Layout = null;
+}
+<style>
+    /* Custom styles for the table */
+    .table {
+        width: 100%;
+        max-width: 800px; /* Set a maximum width for the table */
+        margin: 0 auto; /* Center the table horizontally */
+    }
+
+        .table th {
+            background-color: #3498db; /* Header background color */
+            color: white; /* Header text color */
+            text-align: left; /* Header text alignment */
+        }
+
+        .table th, .table td {
+            padding: 10px; /* Cell padding */
+        }
+
+    .table-striped tbody tr:nth-child(odd) {
+        background-color: #f2f2f2; /* Alternate row background color */
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #e0e0e0; /* Row background color on hover */
+        cursor: pointer; /* Change cursor to pointer on hover */
+    }
+
+    /* Custom style for the h1 heading */
+    h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    /* Custom style for the table caption (optional) */
+    .caption {
+        text-align: center;
+        font-style: italic;
+        color: #888;
+    }
+
+</style>
+<h1>CandidateVoteInfo</h1>
+
+<table class="table table-bordered table-striped table-hover">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Membership No</th>
+            <th>Vote Count</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (ModCandidateVoteInfo candidate in Model)
+        {
+            <tr>
+                <td>@candidate.AutoID</td>
+                <td>@candidate.CandidateName</td>
+                <td>@candidate.MemberShipNo</td>
+                <td>@candidate.VoteCount</td>
+            </tr>
+        }
+    </tbody>
+</table>

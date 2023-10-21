@@ -555,6 +555,9 @@ input:checked + .slider:before {
 
 /* Responsive Styles */
 
+.text-left {
+    text-align: right;
+}
 @media (max-width: 1920px) {
     h1 {
         font-size: 3.5vw;
