@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "votescasted";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - E_VotingSystem</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/castvotestyle.css" asp-append-version="true" />
+</head>
+<body>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+
+
+    <div class="container mt-5">
+        <div class="card text-white bg-dark mb-3" style="max-width: 40rem; margin: 0 auto;">
+            <div class="card-header bg-primary text-white">
+                <strong>Vote Casted</strong>
+            </div>
+            <div class="card-body">
+                <h2 class="card-text">You have successfully casted your votes</h2>
+                <p class="card-text">Thank you for participating in the voting process. Your votes have been recorded. We appreciate your time and contribution.</p>
+            
+
+                <div class="text-left">
+                    <form method="post" asp-controller="Account" asp-action="Index">
+                        <button class="btn btn-primary btn-block">Logout</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>

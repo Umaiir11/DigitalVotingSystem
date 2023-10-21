@@ -15,7 +15,7 @@ namespace E_VotingSystem.Controllers
         {
             ModUser l_ModLoggedInUser = new ModUser();
             l_ModLoggedInUser = HttpContext.Session.Get<ModUser>("LoggedinUser")!;
-            
+
             return View(l_ModLoggedInUser);
         }
 
@@ -25,7 +25,7 @@ namespace E_VotingSystem.Controllers
         }
 
         [HttpPost]
-       
+
         public IActionResult Category()
         {
             // Your logic for casting a vote goes here if needed.
@@ -49,48 +49,162 @@ namespace E_VotingSystem.Controllers
         [HttpPost]
         public IActionResult CastVote(List<ModCandidate> l_ListModCandidates)
         {
-            List <ModVoter> l_ListVoterMode = new List<ModVoter>();    
+            DalInsertVoting l_DalInsertVoting = new DalInsertVoting();
+            List<ModVoter> l_ListVoterMode = new List<ModVoter>();
             ModUser l_ModLoggedInUser = HttpContext.Session.Get<ModUser>("LoggedinUser")!;
             l_ListModCandidates = l_ListModCandidates.Where(x => x.IsVote == true).ToList();
             l_ListModCandidates.Count();
 
 
-          
 
-            for (int i = 0; i < l_ListModCandidates.Count; i++) {
 
-                ModVoter lModVoter = new ModVoter {
+            for (int i = 0; i < l_ListModCandidates.Count; i++)
+            {
+
+                ModVoter lModVoter = new ModVoter
+                {
 
                     CandidateDID = l_ListModCandidates[i].PKGUID,
                     UserDID = l_ModLoggedInUser.PKGUID,
 
                     isVote = l_ListModCandidates[i].IsVote,
                     VoteTimestamp = DateTime.Now,
-                    PKGUID= Guid.NewGuid().ToString()
-                                
+                    PKGUID = Guid.NewGuid().ToString()
+
                 };
-                l_ListVoterMode.Add(lModVoter);     
+                l_ListVoterMode.Add(lModVoter);
 
 
             }
 
-            if (l_ListVoterMode.Count < 2)
+            if (l_ListVoterMode.Count == 2)
             {
                 // Set an error message in TempData to be displayed in the view
 
+               
+
+
+            FncConnectionString();
+                int? lUserCount = l_DalInsertVoting.GetRecordCountForUser(l_ModLoggedInUser.PKGUID!, l_SqlConnection.ConnectionString);
+
+                if (lUserCount == 2)
+                {
+
+                    TempData["ErrorMessage"] = l_ModLoggedInUser.MemberName;
+                    return View("Executive");
+
+                }
+
+                FncConnectionString();
+
+                l_DalInsertVoting.InsertModVotersList(l_ListVoterMode, l_SqlConnection.ConnectionString);
+
+                return View("votescasted");
+
+
+            }
+            else
+            {
                 TempData["ErrorMessage"] = l_ModLoggedInUser.MemberName;
                 return RedirectToAction("Local");
+
             }
-            return RedirectToAction("Index", "Profile");
+
         }
 
 
+        [HttpPost]
+        public IActionResult CastVoteEx(List<ModCandidate> l_ListModCandidates)
+        {
+            List<ModVoter> l_ListVoterMode = new List<ModVoter>();
+            ModUser l_ModLoggedInUser = HttpContext.Session.Get<ModUser>("LoggedinUser")!;
+            l_ListModCandidates = l_ListModCandidates.Where(x => x.IsVote == true).ToList();
+            l_ListModCandidates.Count();
+
+            DalInsertVoting l_DalInsertVoting = new DalInsertVoting();
+
+            FncConnectionString();
+            l_SqlConnection.Open();
+            l_SqlCommand.Connection = l_SqlConnection;
+
+
+            for (int i = 0; i < l_ListModCandidates.Count; i++)
+            {
+
+                ModVoter lModVoter = new ModVoter
+                {
+
+                    CandidateDID = l_ListModCandidates[i].PKGUID,
+                    UserDID = l_ModLoggedInUser.PKGUID,
+
+                    isVote = l_ListModCandidates[i].IsVote,
+                    VoteTimestamp = DateTime.Now,
+                    PKGUID = Guid.NewGuid().ToString()
+
+                };
+                l_ListVoterMode.Add(lModVoter);
+
+
+            }
+
+            if (l_ListVoterMode.Count == 2)
+            {
+                // Set an error message in TempData to be displayed in the view
+
+
+
+
+                FncConnectionString();
+                int? lUserCount = l_DalInsertVoting.GetRecordCountForUser(l_ModLoggedInUser.PKGUID!, l_SqlConnection.ConnectionString);
+
+                if (lUserCount == 2)
+                {
+
+                    TempData["ErrorMessage"] = l_ModLoggedInUser.MemberName;
+                    return View("Executive");
+
+                }
+
+                FncConnectionString();
+
+                l_DalInsertVoting.InsertModVotersList(l_ListVoterMode, l_SqlConnection.ConnectionString);
+
+                return View("votescasted");
+
+
+            }
+            else
+            {
+                TempData["ErrorMessage"] = l_ModLoggedInUser.MemberName;
+                return RedirectToAction("Executive");
+
+            }
+        }
         [HttpGet]
 
         public IActionResult Executive()
         {
             ModUser l_ModLoggedInUser = HttpContext.Session.Get<ModUser>("LoggedinUser")!;
             List<ModCandidate> list_ModCandidate = new List<ModCandidate>();
+            FncConnectionString();
+            DalInsertVoting l_DalInsertVoting = new DalInsertVoting();
+
+            //if (l_ModLoggedInUser== null)
+            //{
+            //    return RedirectToAction("Index","Account");
+
+            //}
+
+            int? lUserCount = l_DalInsertVoting.GetRecordCountForUser(l_ModLoggedInUser.PKGUID!, l_SqlConnection.ConnectionString);
+
+            if (lUserCount == 2)
+            {
+
+                TempData["ErrorMessage"] = l_ModLoggedInUser.MemberName;
+                return View("Executive");
+
+            }
+
 
             FncConnectionString();
             l_SqlConnection.Open();
@@ -129,7 +243,23 @@ namespace E_VotingSystem.Controllers
         public IActionResult Local()
         {
             ModUser l_ModLoggedInUser = HttpContext.Session.Get<ModUser>("LoggedinUser")!;
+            //if (l_ModLoggedInUser== null)
+            //{
+            //    return RedirectToAction("Index","Account");
+
+            //}
             List<ModCandidate> list_ModLoaclCandidate = new List<ModCandidate>();
+            DalInsertVoting l_DalInsertVoting = new DalInsertVoting();
+            FncConnectionString();
+            int? lUserCount = l_DalInsertVoting.GetRecordCountForUser(l_ModLoggedInUser.PKGUID!, l_SqlConnection.ConnectionString);
+
+            if (lUserCount == 2)
+            {
+
+                TempData["ErrorMessage"] = l_ModLoggedInUser.MemberName;
+                return View("Local");
+
+            }
 
             FncConnectionString();
             l_SqlConnection.Open();

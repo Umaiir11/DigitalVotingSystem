@@ -25,6 +25,7 @@ namespace E_VotingSystem.Controllers
         [HttpPost]
         public ActionResult Verify(ModUser lModUser)
         {
+            DalInsertVoting l_DalInsertVoting =  new DalInsertVoting();
             FncConnectionString();
             l_SqlConnection.Open();
             l_SqlCommand.Connection = l_SqlConnection;
@@ -57,6 +58,15 @@ namespace E_VotingSystem.Controllers
                 if (String.IsNullOrEmpty(l_ModloggedInUser.Mobile))
                 {
                     return View("ErrorMobile");
+                }
+
+                int? lUserCount = l_DalInsertVoting.GetRecordCountForUser(l_ModloggedInUser.PKGUID!,l_SqlConnection.ConnectionString);
+
+                if(lUserCount == 2) {
+
+                    TempData["ErrorMessage"] = l_ModloggedInUser.MemberName;
+                    return View("Index");
+
                 }
 
                 HttpContext.Session.Set<ModUser>("LoggedinUser", l_ModloggedInUser);
