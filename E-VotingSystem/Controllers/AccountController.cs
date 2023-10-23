@@ -65,7 +65,7 @@ namespace E_VotingSystem.Controllers
 
                 int? lUserCount = l_DalInsertVoting.GetRecordCountForUser(l_ModloggedInUser.PKGUID!, l_SqlConnection.ConnectionString);
 
-                if (lUserCount == 2)
+                if (lUserCount == 5)
                 {
 
                     TempData["ErrorMessage"] = l_ModloggedInUser.MemberName;

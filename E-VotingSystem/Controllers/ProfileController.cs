@@ -76,7 +76,7 @@ namespace E_VotingSystem.Controllers
 
             }
 
-            if (l_ListVoterMode.Count == 2)
+            if (l_ListVoterMode.Count == 5)
             {
                 // Set an error message in TempData to be displayed in the view
 
@@ -86,7 +86,7 @@ namespace E_VotingSystem.Controllers
             FncConnectionString();
                 int? lUserCount = l_DalInsertVoting.GetRecordCountForUser(l_ModLoggedInUser.PKGUID!, l_SqlConnection.ConnectionString);
 
-                if (lUserCount == 2)
+                if (lUserCount == 5)
                 {
 
                     TempData["ErrorMessage"] = l_ModLoggedInUser.MemberName;
@@ -146,7 +146,7 @@ namespace E_VotingSystem.Controllers
 
             }
 
-            if (l_ListVoterMode.Count == 2)
+            if (l_ListVoterMode.Count == 5)
             {
                 // Set an error message in TempData to be displayed in the view
 
@@ -156,7 +156,7 @@ namespace E_VotingSystem.Controllers
                 FncConnectionString();
                 int? lUserCount = l_DalInsertVoting.GetRecordCountForUser(l_ModLoggedInUser.PKGUID!, l_SqlConnection.ConnectionString);
 
-                if (lUserCount == 2)
+                if (lUserCount == 5)
                 {
 
                     TempData["ErrorMessage"] = l_ModLoggedInUser.MemberName;
@@ -196,7 +196,7 @@ namespace E_VotingSystem.Controllers
 
             int? lUserCount = l_DalInsertVoting.GetRecordCountForUser(l_ModLoggedInUser.PKGUID!, l_SqlConnection.ConnectionString);
 
-            if (lUserCount == 2)
+            if (lUserCount == 5)
             {
 
                 TempData["ErrorMessage"] = l_ModLoggedInUser.MemberName;
@@ -252,7 +252,7 @@ namespace E_VotingSystem.Controllers
             FncConnectionString();
             int? lUserCount = l_DalInsertVoting.GetRecordCountForUser(l_ModLoggedInUser.PKGUID!, l_SqlConnection.ConnectionString);
 
-            if (lUserCount == 2)
+            if (lUserCount == 5)
             {
 
                 TempData["ErrorMessage"] = l_ModLoggedInUser.MemberName;
