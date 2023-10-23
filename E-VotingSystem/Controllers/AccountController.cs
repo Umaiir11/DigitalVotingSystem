@@ -29,7 +29,7 @@ namespace E_VotingSystem.Controllers
             FncConnectionString();
             l_SqlConnection.Open();
             l_SqlCommand.Connection = l_SqlConnection;
-            l_SqlCommand.CommandText = "SELECT * FROM TBU_USER WHERE MembershipID = @MembershipID AND Password = @Password";
+            l_SqlCommand.CommandText = "SELECT * FROM TBU_Member WHERE MembershipID = @MembershipID AND Password = @Password";
             l_SqlCommand.Parameters.AddWithValue("@MembershipID", lModUser.MembershipID);
             l_SqlCommand.Parameters.AddWithValue("@Password", lModUser.Password);
             l_SqlDataReader = l_SqlCommand.ExecuteReader();
