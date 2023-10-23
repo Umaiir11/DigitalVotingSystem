@@ -103,6 +103,15 @@ section {
     display: block;
 }
 
+.minimal-button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    text-decoration: underline;
+    color: inherit; /* Inherit text color */
+    padding: 0;
+}
+
 ol,
 ul {
     list-style: none;
