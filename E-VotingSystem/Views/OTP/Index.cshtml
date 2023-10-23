@@ -47,25 +47,13 @@ const firebaseConfig = {
     <section class="wrapper">
         <div class="container">
             <div class="col-sm-8 offset-sm-2 col-lg-6 offset-lg-3 col-xl-6 offset-xl-3 text-center">
-                <div class="logo">
-                    @if (!string.IsNullOrEmpty(@Model.ImageLocation))
-                    {
-
-                        <img src="~/images/memberimages/@Model.ImageLocation" alt="Image Description" class="circular-image">
-
-                    }
-
-                    else
-                    {
-                        <img src="https://as1.ftcdn.net/v2/jpg/02/42/45/90/1000_F_242459076_53ffNaKxcGS1ioScWiSt50e9ltwvynqt.jpg" alt="Default Image" class="circular-image">
-                    }
-                </div>
                 <form class="rounded bg-white shadow p-5">
                     <h3 class="text-dark fw-bolder fs-4 mb-4">Two Step Verification</h3>
 
                     <div class="form-group text-muted mb-4">
-                        <label for="verification-code">Enter the verification code we sent to:</label>
-                        <input type="text" id="number" class="form-control placeholder-input" placeholder="@Model.Mobile" value="@Model.Mobile">
+                        <label for="verification-code">The verification code we sent to:</label>
+                        <input type="text" id="number" class="form-control placeholder-input" placeholder="@Model.Mobile" value="@Model.Mobile" disabled>
+
                        
 
                         <div id="recaptcha-container" class="d-flex justify-content-center align-items-center mt-4"></div>

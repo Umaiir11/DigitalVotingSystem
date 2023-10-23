@@ -218,10 +218,19 @@ body {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
-.custom-card {
+..custom-card {
     margin: 0 auto; /* Center the card horizontally */
-    max-width: 300px; /* Adjust the width as needed */
+    max-width: 270px; /* Adjust the width as needed */
 }
+
+/* Add a media query for smaller screens */
+@media (max-width: 576px) {
+    .custom-card {
+        min-width: 200px; /* Set the minimum width to 200px for smaller screens */
+    }
+}
+
+
 
 .custom-header {
     background-color: black; /* Set the header background color to black */

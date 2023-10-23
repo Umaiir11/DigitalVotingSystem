@@ -1,107 +1,106 @@
-﻿
-@{
-	ViewData["Title"] = " Member Login";
-	Layout = null;
+﻿@{
+    ViewData["Title"] = " Member Login";
+    Layout = null;
 }
- 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>@ViewData["Title"] - E_VotingSystem</title>
-	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-	<link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
-	<link rel="stylesheet" href="~/css/font-awesome.css" asp-append-version="true" />
-	<link rel="stylesheet" href="~/images/bg.jpg" asp-append-version="true" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - E_VotingSystem</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/font-awesome.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/images/bg.jpg" asp-append-version="true" />
 
 
-	<link rel="stylesheet" href="~/E_VotingSystem.styles.css" asp-append-version="true" />
-	<title> MemberLogin Login</title>
+    <link rel="stylesheet" href="~/E_VotingSystem.styles.css" asp-append-version="true" />
+    <title> MemberLogin Login</title>
 </head>
 <body>
-	
 
 
-	<div class="container">
-	
-		<!-- Add this section to display the error message -->
-		@if (TempData["ErrorMessage"] != null)
-		{
+
+    <div class="container">
+
+        <!-- Add this section to display the error message -->
+        @if (TempData["ErrorMessage"] != null)
+        {
 
 
-			<div class="alert alert-danger alert-dismissible fade show" role="alert">
-				<strong> @TempData["ErrorMessage"]!</strong> You cannot cast your votes again because you have already voted in this election. Thank you for participating!
-				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-			</div>
-		}
-		<!-- End of error message section -->
-		<div class="row">
-			<!-- Your existing code for displaying candidates -->
-		</div>
-	</div>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong> @TempData["ErrorMessage"]!</strong> You cannot cast your votes again because you have already voted in this election. Thank you for participating!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+        <!-- End of error message section -->
+        <div class="row">
+            <!-- Your existing code for displaying candidates -->
+        </div>
+    </div>
 
 
-	<h1> Member Login</h1>
+    <h1> Member Login</h1>
 
-	<div class="clear-loading spinner">
-		<span></span>
-	</div>
-	<div class="w3ls-login box box--big">
-		<!-- form starts here -->
-		<form asp-controller="Account" asp-action="Verify" method="post">
-			<div class="agile-field-txt">
-				<label><i class="fa fa-user" aria-hidden="true"></i> Membership ID</label>
-				<input type="text" name="MembershipID" placeholder="Enter Membership ID" required="" />
-			</div>
-			<div class="agile-field-txt">
-				<label><i class="fa fa-unlock-alt" aria-hidden="true"></i> Password</label>
-				<input type="password" name="Password" placeholder="Enter Password" required="" id="myInput" />
-				<div class="agile_label">
-					<input id="check3" name="check3" type="checkbox" value="show password" onclick="myFunction()">
-					<label class="check" for="check3">Show password</label>
-				</div>
-				<div class="agile-right">
-					<a href="@Url.Action("Index", "ElectionOfficials")" class="minimal-button">Login As Election Officials</a>
-				</div>
+    <div class="clear-loading spinner">
+        <span></span>
+    </div>
+    <div class="w3ls-login box box--big">
+        <!-- form starts here -->
+        <form asp-controller="Account" asp-action="Verify" method="post">
+            <div class="agile-field-txt">
+                <label><i class="fa fa-user" aria-hidden="true"></i> Membership ID</label>
+                <input type="text" name="MembershipID" placeholder="Enter Membership ID" required="" />
+            </div>
+            <div class="agile-field-txt">
+                <label><i class="fa fa-unlock-alt" aria-hidden="true"></i> Password</label>
+                <input type="password" name="Password" placeholder="Enter Password" required="" id="myInput" />
+                <div class="agile_label">
+                    <input id="check3" name="check3" type="checkbox" value="show password" onclick="myFunction()">
+                    <label class="check" for="check3">Show password</label>
+                </div>
+                <div class="agile-right">
+                    <a href="@Url.Action("Index", "ElectionOfficials")" class="minimal-button">Login As Election Officials</a>
+                </div>
 
-			</div>
-			<!-- script for show password -->
-			<script>
-				function myFunction() {
-					var x = document.getElementById("myInput");
-					if (x.type === "password") {
-						x.type = "text";
-					} else {
-						x.type = "password";
-					}
-				}
-			</script>
-			<!-- //end script -->
-			<input type="submit" value="LOGIN">
-
-
-		</form>
+            </div>
+            <!-- script for show password -->
+            <script>
+                function myFunction() {
+                    var x = document.getElementById("myInput");
+                    if (x.type === "password") {
+                        x.type = "text";
+                    } else {
+                        x.type = "password";
+                    }
+                }
+            </script>
+            <!-- //end script -->
+            <input type="submit" value="LOGIN">
 
 
-	</div>
-	<!-- //form ends here -->
-	<!--copyright-->
+        </form>
 
 
-	<div class="copy-wthree">
-		<p>
-			© 2023 Digi Voting . All Rights Reserved | Design by
-			<a href="https://www.aisonesystems.com//" target="_blank">Aisone Systems</a>
-		</p>
-	</div>
+    </div>
+    <!-- //form ends here -->
+    <!--copyright-->
 
-	
-	<!--//copyright-->
-	<script src="~/lib/jquery/dist/jquery.min.js"></script>
-	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-	<script src="~/js/site.js" asp-append-version="true"></script>
+
+    <div class="copy-wthree">
+        <p>
+            © 2023 Digi Voting . All Rights Reserved | Design by
+            <a href="https://www.aisonesystems.com//" target="_blank">Aisone Systems</a>
+        </p>
+    </div>
+
+
+    <!--//copyright-->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
 </body>
 </html>
 
