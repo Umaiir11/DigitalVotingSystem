@@ -16,5 +16,5 @@
         public string? ImageLocation { get; set; }
         public bool IsVote { get; set; }
 
-    }
+	}
 }
