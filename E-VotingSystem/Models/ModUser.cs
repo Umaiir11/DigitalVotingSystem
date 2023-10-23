@@ -18,7 +18,9 @@
 		public string? Region { get; set; }
 		public int AutoID { get; set; }
 		public string? Password { get; set; }
-	}
+        public string? ImageLocation { get; set; }
+
+    }
 
 
 }

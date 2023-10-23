@@ -31,9 +31,17 @@
                         <strong>User Profile</strong>
                     </div>
                     <div class="card-body">
-                        <div class="profile-image">
-                            <img src="https://as1.ftcdn.net/v2/jpg/02/42/45/90/1000_F_242459076_53ffNaKxcGS1ioScWiSt50e9ltwvynqt.jpg" alt="Image Description" class="circular-image">
-                        </div>
+                         @if (!string.IsNullOrEmpty(@Model.ImageLocation))
+                        {
+
+                            <img src="~/images/@Model.ImageLocation" alt="Image Description" class="circular-image">
+
+                        }
+
+                        else
+                        {
+                            <img src="https://as1.ftcdn.net/v2/jpg/02/42/45/90/1000_F_242459076_53ffNaKxcGS1ioScWiSt50e9ltwvynqt.jpg" alt="Default Image" class="circular-image">
+                        }
                         <div class="profile-details">
                             <div class="profile-row">
                                 <strong>Membership ID:</strong> @Model.MembershipID

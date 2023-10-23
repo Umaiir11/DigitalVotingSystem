@@ -26,45 +26,53 @@
 
 
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-6">
-            <div class="card mb-4">
-                <div class="card-header bg-primary text-white">
-                    <strong>User Profile</strong>
-                </div>
-                <div class="card-body">
-                    <div class="profile-image">
-                        <img src="https://as1.ftcdn.net/v2/jpg/02/42/45/90/1000_F_242459076_53ffNaKxcGS1ioScWiSt50e9ltwvynqt.jpg" alt="Image Description" class="circular-image">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <strong>User Profile</strong>
                     </div>
-                    <div class="profile-details">
-                        <div class="profile-row">
-                            <strong>Membership ID:</strong> @Model.MembershipID
+                    <div class="card-body">
+                        @if (!string.IsNullOrEmpty(@Model.ImageLocation))
+                        {
+
+                            <img src="~/images/@Model.ImageLocation" alt="Image Description" class="circular-image">
+
+                        }
+
+                        else
+                        {
+                            <img src="https://as1.ftcdn.net/v2/jpg/02/42/45/90/1000_F_242459076_53ffNaKxcGS1ioScWiSt50e9ltwvynqt.jpg" alt="Default Image" class="circular-image">
+                        }
+                        <div class="profile-details">
+                            <div class="profile-row">
+                                <strong>Membership ID:</strong> @Model.MembershipID
+                            </div>
+                            <div class="profile-row">
+                                <strong>Name:</strong> @Model.MemberName
+                            </div>
+                            <div class="profile-row">
+                                <strong>Region:</strong> @Model.Region
+                            </div>
+                            <div class="profile-row">
+                                <strong>Email:</strong> @Model.Email
+                            </div>
+                            <div class="profile-row">
+                                <strong>Address:</strong> @Model.Address1
+                            </div>
                         </div>
-                        <div class="profile-row">
-                            <strong>Name:</strong> @Model.MemberName
-                        </div>
-                        <div class="profile-row">
-                            <strong>Region:</strong> @Model.Region
-                        </div>
-                        <div class="profile-row">
-                            <strong>Email:</strong> @Model.Email
-                        </div>
-                        <div class="profile-row">
-                            <strong>Address:</strong> @Model.Address1
-                        </div>
-                    </div>
-                    <div class="text-left">
+                        <div class="text-left">
                             <form method="post" asp-controller="Profile" asp-action="Category">
-                            <button type="submit" class="btn btn-primary">Cast Vote</button>
-                        </form>
-                      
+                                <button type="submit" class="btn btn-primary">Cast Vote</button>
+                            </form>
+
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
     <div class="text-left">
         <form method="post" asp-controller="Profile" asp-action="Logout">
@@ -72,7 +80,7 @@
         </form>
     </div>
 
-   
+
     <!--//copyright-->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

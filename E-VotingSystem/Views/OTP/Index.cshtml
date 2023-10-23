@@ -48,7 +48,17 @@ const firebaseConfig = {
         <div class="container">
             <div class="col-sm-8 offset-sm-2 col-lg-6 offset-lg-3 col-xl-6 offset-xl-3 text-center">
                 <div class="logo">
-                    <img src="./images/logo.png" class="img-fluid" alt="logo">
+                    @if (!string.IsNullOrEmpty(@Model.ImageLocation))
+                    {
+
+                        <img src="~/images/@Model.ImageLocation" alt="Image Description" class="circular-image">
+
+                    }
+
+                    else
+                    {
+                        <img src="https://as1.ftcdn.net/v2/jpg/02/42/45/90/1000_F_242459076_53ffNaKxcGS1ioScWiSt50e9ltwvynqt.jpg" alt="Default Image" class="circular-image">
+                    }
                 </div>
                 <form class="rounded bg-white shadow p-5">
                     <h3 class="text-dark fw-bolder fs-4 mb-4">Two Step Verification</h3>

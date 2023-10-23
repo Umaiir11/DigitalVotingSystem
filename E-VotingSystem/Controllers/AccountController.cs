@@ -38,6 +38,7 @@ namespace E_VotingSystem.Controllers
             {
                 ModUser l_ModloggedInUser = new ModUser
                 {
+                    ImageLocation = l_SqlDataReader["ImageLocation"] as string,
                     PKGUID = l_SqlDataReader["PKGUID"] as string,
                     MembershipID = l_SqlDataReader["MembershipID"] as string,
                     MemberName = l_SqlDataReader["MemberName"] as string,
@@ -51,6 +52,8 @@ namespace E_VotingSystem.Controllers
                     Password = lModUser.Password, // Set the password from the user input
                     Mobile = l_SqlDataReader["Mobile"] as string,
                     ContactNo = l_SqlDataReader["ContactNo"] as int?
+
+                    
                 };
                 l_SqlConnection.Close();
 
