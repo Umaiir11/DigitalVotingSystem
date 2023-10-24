@@ -19,6 +19,10 @@
 		public int AutoID { get; set; }
 		public string? Password { get; set; }
         public string? ImageLocation { get; set; }
+        public string? ExRegionSeats { get; set; }
+        public string? LcRegionSeats { get; set; }
+
+
 
     }
 

@@ -29,7 +29,7 @@
 
 
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong> @TempData["ErrorMessage"]!</strong> Please select at least 5 candidates.
+                <strong> @TempData["ErrorMessage"]!</strong> 
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             }
@@ -74,16 +74,19 @@
                                             <strong>Region:</strong> @candidate.Region
                                         </p>
                                     </div>
-                                    <div class="text-left">
-                                        <div class="form-check form-check-inline">
-                                            <input type="hidden" asp-for="@Model[i].PKGUID" />
-                                            <input type="hidden" asp-for="@Model[i].CandidateName" />
-                                            <input type="hidden" asp-for="@Model[i].NominateFor" />
+                                <div class="text-left">
+                                    <div class="form-check form-check-inline">
+                                        <input type="hidden" asp-for="@Model[i].PKGUID" />
+                                        <input type="hidden" asp-for="@Model[i].CandidateName" />
+                                        <input type="hidden" asp-for="@Model[i].NominateFor" />
+                                        <div class="form-check-input-container">
                                             <input type="checkbox" class="form-check-input" asp-for="@Model[i].IsVote" id="castVote_@Model[i].PKGUID">
-                                            <label class="form-check-label" for="castVote_@Model[i].PKGUID">Cast Vote</label>
+                                            <label class="form-check-label link-button" for="castVote_@Model[i].PKGUID">Cast Vote</label>
+
                                         </div>
                                     </div>
                                 </div>
+                            </div>
                             </div>
                         }
                     }

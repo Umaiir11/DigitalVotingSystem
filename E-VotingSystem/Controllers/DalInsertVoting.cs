@@ -9,7 +9,7 @@ namespace E_VotingSystem.Controllers
     public class DalInsertVoting
     {
 
-        public int GetRecordCountForUser(string userDID, string connectionString)
+        public int FncGetRecordCountForUser(string userDID, string connectionString)
         {
             int recordCount = 0;
 
@@ -34,7 +34,7 @@ namespace E_VotingSystem.Controllers
             return recordCount;
         }
 
-        public List<ModCandidateVoteInfo> GetResultOfCandidates(string connectionString)
+        public List<ModCandidateVoteInfo> FncGetResultOfCandidates(string connectionString)
         {
             List<ModCandidateVoteInfo> candidateResults = new List<ModCandidateVoteInfo>();
 
@@ -66,7 +66,7 @@ namespace E_VotingSystem.Controllers
             return candidateResults;
         }
 
-        public void InsertModVotersList(List<ModVoter> modVoterList, string sqlConnection)
+        public void FncInsertModVotersList(List<ModVoter> modVoterList, string sqlConnection)
         {
             var modVoterEnumerable = new IEnumerableVoter(); // Create an instance of IEnumerableItem
 

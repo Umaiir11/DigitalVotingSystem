@@ -1,4 +1,5 @@
-﻿using E_VotingSystem.Models;
+﻿using E_VotingSystem.ConnectionString;
+using E_VotingSystem.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.SqlClient;
 
@@ -19,7 +20,8 @@ namespace E_VotingSystem.Controllers
 
         void FncConnectionString()
         {
-            l_SqlConnection.ConnectionString = "Data Source=MUHAMMAD-UMAIR\\AISONESQL;Initial Catalog=EVoting;Integrated Security=True";
+            l_SqlConnection.ConnectionString = ConnectionHelper.FncGetConnectionString();
+
         }
 
         [HttpPost]
@@ -29,7 +31,7 @@ namespace E_VotingSystem.Controllers
             FncConnectionString();
             l_SqlConnection.Open();
             l_SqlCommand.Connection = l_SqlConnection;
-            l_SqlCommand.CommandText = "SELECT * FROM TBU_Member WHERE MembershipID = @MembershipID AND Password = @Password";
+            l_SqlCommand.CommandText = "SELECT * FROM Vw_TBU_Members WHERE MembershipID = @MembershipID AND Password = @Password";
             l_SqlCommand.Parameters.AddWithValue("@MembershipID", lModUser.MembershipID);
             l_SqlCommand.Parameters.AddWithValue("@Password", lModUser.Password);
             l_SqlDataReader = l_SqlCommand.ExecuteReader();
@@ -39,6 +41,8 @@ namespace E_VotingSystem.Controllers
                 ModUser l_ModloggedInUser = new ModUser
                 {
                     ImageLocation = l_SqlDataReader["ImageLocation"] as string,
+                    ExRegionSeats= l_SqlDataReader["ExCouncilSeats"] as string,
+                    LcRegionSeats    = l_SqlDataReader["LcCouncilSeats"] as string,
                     PKGUID = l_SqlDataReader["PKGUID"] as string,
                     MembershipID = l_SqlDataReader["MembershipID"] as string,
                     MemberName = l_SqlDataReader["MemberName"] as string,
@@ -63,9 +67,9 @@ namespace E_VotingSystem.Controllers
                     return View("ErrorMobile");
                 }
 
-                int? lUserCount = l_DalInsertVoting.GetRecordCountForUser(l_ModloggedInUser.PKGUID!, l_SqlConnection.ConnectionString);
+                int? lUserCount = l_DalInsertVoting.FncGetRecordCountForUser(l_ModloggedInUser.PKGUID!, l_SqlConnection.ConnectionString);
 
-                if (lUserCount == 5)
+                if (lUserCount > 1)
                 {
 
                     TempData["ErrorMessage"] = l_ModloggedInUser.MemberName;
@@ -92,7 +96,7 @@ namespace E_VotingSystem.Controllers
             DalInsertVoting l_dalInsertVoting = new DalInsertVoting();
 
             List<ModCandidateVoteInfo> l_ListModCandidateVoteInfo = new List<ModCandidateVoteInfo>();
-            l_ListModCandidateVoteInfo = l_dalInsertVoting.GetResultOfCandidates(l_SqlConnection.ConnectionString);
+            l_ListModCandidateVoteInfo = l_dalInsertVoting.FncGetResultOfCandidates(l_SqlConnection.ConnectionString);
 			return View("CandidateVoteInfo", l_ListModCandidateVoteInfo);
 
 		}

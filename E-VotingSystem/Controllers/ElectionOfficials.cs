@@ -1,4 +1,5 @@
-﻿using E_VotingSystem.Models;
+﻿using E_VotingSystem.ConnectionString;
+using E_VotingSystem.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.SqlClient;
@@ -18,8 +19,8 @@ namespace E_VotingSystem.Controllers
 
 		void FncConnectionString()
 		{
-			l_SqlConnection.ConnectionString = "Data Source=MUHAMMAD-UMAIR\\AISONESQL;Initial Catalog=EVoting;Integrated Security=True";
-		}
+            l_SqlConnection.ConnectionString = ConnectionHelper.FncGetConnectionString();
+        }
 
 		[HttpPost]
 		public ActionResult Verify(ModElectionOfficials lModElectionOfficial)
@@ -55,7 +56,7 @@ namespace E_VotingSystem.Controllers
 			DalInsertVoting l_dalInsertVoting = new DalInsertVoting();
 
 			List<ModCandidateVoteInfo> l_ListModCandidateVoteInfo = new List<ModCandidateVoteInfo>();
-			l_ListModCandidateVoteInfo = l_dalInsertVoting.GetResultOfCandidates(l_SqlConnection.ConnectionString);
+			l_ListModCandidateVoteInfo = l_dalInsertVoting.FncGetResultOfCandidates(l_SqlConnection.ConnectionString);
 			return View("CandidateVoteInfo", l_ListModCandidateVoteInfo);
 
 		}

@@ -1,4 +1,5 @@
-﻿using E_VotingSystem.Models;
+﻿using E_VotingSystem.ConnectionString;
+using E_VotingSystem.Models;
 using Microsoft.AspNetCore.Mvc;
 
 using System.Data.SqlClient;
@@ -21,7 +22,7 @@ namespace E_VotingSystem.Controllers
 
         void FncConnectionString()
         {
-            l_SqlConnection.ConnectionString = "Data Source=MUHAMMAD-UMAIR\\AISONESQL;Initial Catalog=EVoting;Integrated Security=True";
+            l_SqlConnection.ConnectionString = ConnectionHelper.FncGetConnectionString();
         }
 
         [HttpPost]
@@ -47,68 +48,61 @@ namespace E_VotingSystem.Controllers
 
 
         [HttpPost]
+  
         public IActionResult CastVote(List<ModCandidate> l_ListModCandidates)
         {
             DalInsertVoting l_DalInsertVoting = new DalInsertVoting();
             List<ModVoter> l_ListVoterMode = new List<ModVoter>();
             ModUser l_ModLoggedInUser = HttpContext.Session.Get<ModUser>("LoggedinUser")!;
-            l_ListModCandidates = l_ListModCandidates.Where(x => x.IsVote == true).ToList();
-            l_ListModCandidates.Count();
 
+            // Validate l_ModLoggedInUser.LcRegionSeats before parsing
+            if (!int.TryParse(l_ModLoggedInUser.LcRegionSeats, out int l_LocalRegionSeats))
+            {
+                // Handle the case where l_ModLoggedInUser.LcRegionSeats is not a valid integer
+                // You can set an error message in TempData and return to the view
+                TempData["ErrorMessage"] = "Invalid Region Seats";
+                return RedirectToAction("Local");
+            }
 
-
+            l_ListModCandidates = l_ListModCandidates.Where(x => x.IsVote).ToList();
 
             for (int i = 0; i < l_ListModCandidates.Count; i++)
             {
-
                 ModVoter lModVoter = new ModVoter
                 {
-
                     CandidateDID = l_ListModCandidates[i].PKGUID,
                     UserDID = l_ModLoggedInUser.PKGUID,
-
                     isVote = l_ListModCandidates[i].IsVote,
                     VoteTimestamp = DateTime.Now,
                     PKGUID = Guid.NewGuid().ToString()
-
                 };
                 l_ListVoterMode.Add(lModVoter);
-
             }
 
-            if (l_ListVoterMode.Count == 5)
+            if (l_ListVoterMode.Count == l_LocalRegionSeats)
             {
-                // Set an error message in TempData to be displayed in the view
+                FncConnectionString();
+                int? lUserCount = l_DalInsertVoting.FncGetRecordCountForUser(l_ModLoggedInUser.PKGUID!, l_SqlConnection.ConnectionString);
 
-               
-
-
-            FncConnectionString();
-                int? lUserCount = l_DalInsertVoting.GetRecordCountForUser(l_ModLoggedInUser.PKGUID!, l_SqlConnection.ConnectionString);
-
-                if (lUserCount == 5)
+                if (lUserCount == l_LocalRegionSeats)
                 {
+                    TempData["ErrorMessage"] = $"{l_ModLoggedInUser.MemberName} have to select at least {l_LocalRegionSeats} candidates.";
+                    TempData["SeatsCount"] = l_LocalRegionSeats;
 
-                    TempData["ErrorMessage"] = l_ModLoggedInUser.MemberName;
-                    return View("Executive");
-
+                    return View("Local");
                 }
 
                 FncConnectionString();
 
-                l_DalInsertVoting.InsertModVotersList(l_ListVoterMode, l_SqlConnection.ConnectionString);
+                l_DalInsertVoting.FncInsertModVotersList(l_ListVoterMode, l_SqlConnection.ConnectionString);
 
                 return View("votescasted");
-
-
             }
             else
             {
-                TempData["ErrorMessage"] = l_ModLoggedInUser.MemberName;
+                TempData["ErrorMessage"] = $"{l_ModLoggedInUser.MemberName} have to select at least {l_LocalRegionSeats} candidates.";
                 return RedirectToAction("Local");
-
             }
-
         }
 
 
@@ -117,66 +111,56 @@ namespace E_VotingSystem.Controllers
         {
             List<ModVoter> l_ListVoterMode = new List<ModVoter>();
             ModUser l_ModLoggedInUser = HttpContext.Session.Get<ModUser>("LoggedinUser")!;
-            l_ListModCandidates = l_ListModCandidates.Where(x => x.IsVote == true).ToList();
-            l_ListModCandidates.Count();
+            l_ListModCandidates = l_ListModCandidates.Where(x => x.IsVote).ToList();
 
             DalInsertVoting l_DalInsertVoting = new DalInsertVoting();
 
-            FncConnectionString();
-            l_SqlConnection.Open();
-            l_SqlCommand.Connection = l_SqlConnection;
-
+            // Validate l_ModLoggedInUser.ExRegionSeats before parsing
+            if (!int.TryParse(l_ModLoggedInUser.ExRegionSeats, out int l_ExecutiveRegionSeats))
+            {
+                // Handle the case where l_ModLoggedInUser.ExRegionSeats is not a valid integer
+                // You can set an error message in TempData and return to the view
+                TempData["ErrorMessage"] = "Invalid Executive Region Seats";
+                return RedirectToAction("Executive");
+            }
 
             for (int i = 0; i < l_ListModCandidates.Count; i++)
             {
-
                 ModVoter lModVoter = new ModVoter
                 {
-
                     CandidateDID = l_ListModCandidates[i].PKGUID,
                     UserDID = l_ModLoggedInUser.PKGUID,
-
                     isVote = l_ListModCandidates[i].IsVote,
                     VoteTimestamp = DateTime.Now,
                     PKGUID = Guid.NewGuid().ToString()
-
                 };
                 l_ListVoterMode.Add(lModVoter);
-
-
             }
 
-            if (l_ListVoterMode.Count == 5)
+            if (l_ListVoterMode.Count == l_ExecutiveRegionSeats)
             {
-                // Set an error message in TempData to be displayed in the view
-
-
-
-
                 FncConnectionString();
-                int? lUserCount = l_DalInsertVoting.GetRecordCountForUser(l_ModLoggedInUser.PKGUID!, l_SqlConnection.ConnectionString);
+                l_SqlConnection.Open();
+                l_SqlCommand.Connection = l_SqlConnection;
 
-                if (lUserCount == 5)
+                int? lUserCount = l_DalInsertVoting.FncGetRecordCountForUser(l_ModLoggedInUser.PKGUID!, l_SqlConnection.ConnectionString);
+
+                if (lUserCount == l_ExecutiveRegionSeats)
                 {
-
-                    TempData["ErrorMessage"] = l_ModLoggedInUser.MemberName;
+                    TempData["ErrorMessage"] = $"{l_ModLoggedInUser.MemberName} have to select at least {l_ExecutiveRegionSeats} candidates.";
+                    TempData["SeatsCount"] = l_ExecutiveRegionSeats;
                     return View("Executive");
-
                 }
 
                 FncConnectionString();
 
-                l_DalInsertVoting.InsertModVotersList(l_ListVoterMode, l_SqlConnection.ConnectionString);
-
+                l_DalInsertVoting.FncInsertModVotersList(l_ListVoterMode, l_SqlConnection.ConnectionString);
                 return View("votescasted");
-
-
             }
             else
             {
-                TempData["ErrorMessage"] = l_ModLoggedInUser.MemberName;
+                TempData["ErrorMessage"] = $"{l_ModLoggedInUser.MemberName} have to select at least {l_ExecutiveRegionSeats} candidates.";
                 return RedirectToAction("Executive");
-
             }
         }
         [HttpGet]
@@ -194,9 +178,9 @@ namespace E_VotingSystem.Controllers
 
             //}
 
-            int? lUserCount = l_DalInsertVoting.GetRecordCountForUser(l_ModLoggedInUser.PKGUID!, l_SqlConnection.ConnectionString);
+            int? lUserCount = l_DalInsertVoting.FncGetRecordCountForUser(l_ModLoggedInUser.PKGUID!, l_SqlConnection.ConnectionString);
 
-            if (lUserCount == 5)
+            if (lUserCount == 1)
             {
 
                 TempData["ErrorMessage"] = l_ModLoggedInUser.MemberName;
@@ -250,7 +234,7 @@ namespace E_VotingSystem.Controllers
             List<ModCandidate> list_ModLoaclCandidate = new List<ModCandidate>();
             DalInsertVoting l_DalInsertVoting = new DalInsertVoting();
             FncConnectionString();
-            int? lUserCount = l_DalInsertVoting.GetRecordCountForUser(l_ModLoggedInUser.PKGUID!, l_SqlConnection.ConnectionString);
+            int? lUserCount = l_DalInsertVoting.FncGetRecordCountForUser(l_ModLoggedInUser.PKGUID!, l_SqlConnection.ConnectionString);
 
             if (lUserCount == 5)
             {
