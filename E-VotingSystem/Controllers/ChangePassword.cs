@@ -48,7 +48,7 @@ namespace E_VotingSystem.Controllers
 
                 if (rowsAffected > 0)
                 {
-                    // Password updated successfully
+                    // Password updated successfullyy
                     return View("passchanged");
                 }
                 else
