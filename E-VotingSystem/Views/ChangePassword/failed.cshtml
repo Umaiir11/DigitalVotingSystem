@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "failed";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - E_VotingSystem</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/castvotestyle.css" asp-append-version="true" />
+</head>
+<body>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+
+
+    <div class="container mt-5">
+        <div class="card text-white bg-dark mb-3" style="max-width: 40rem; margin: 0 auto;">
+            <div class="card-header bg-danger text-white">
+                <!-- Changed header to indicate failure -->
+                <strong>Password Change Failed</strong>
+            </div>
+            <div class="card-body">
+                <h2 class="card-text">Oops! 😞</h2> <!-- Added a sad emoji -->
+                <p class="card-text">We're sorry, but it seems there was an issue with changing your password. Please try again.</p>
+
+                <div class="text-left">
+                    <form method="post" asp-controller="Profile" asp-action="Logout">
+                        <button class="btn btn-primary btn-block">Logout</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>

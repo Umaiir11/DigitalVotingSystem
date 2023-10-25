@@ -1,0 +1,49 @@
+﻿@model ModUser
+
+
+@{
+    ViewData["Title"] = "New Password";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - E_VotingSystem</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/castvotestyle.css" asp-append-version="true" />
+</head>
+<body>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+
+    <div class="container mt-5">
+        <div class="card text-white bg-dark mb-3" style="max-width: 40rem; margin: 0 auto;">
+            <div class="card-header bg-primary text-white">
+               Hey!!  <strong>@Model.MemberName</strong>
+            </div>
+            <div class="card-body">
+                <h2 class="card-text">Change Password</h2>
+               
+
+                <form method="post" action="/ChangePassword/UpdatePassword">
+                    <div class="form-group">
+                        <label for="newPassword">New Password</label>
+                        <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+                    </div>
+                    <br />
+                    <button type="submit" class="btn btn-primary">Update Password</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>
