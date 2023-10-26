@@ -73,7 +73,6 @@ namespace E_VotingSystem.Controllers
                 int l_LcSeatsCount = int.Parse(l_ModloggedInUser.LcRegionSeats ?? "0");
                 int? TotalVotes = l_ExSeatsCount + l_LcSeatsCount;
 
-               // if (lUserCount > int.Parse(l_ModloggedInUser.ExRegionSeats!) || lUserCount > int.Parse(l_ModloggedInUser.LcRegionSeats!))
 
                 if  (lUserCount > TotalVotes)
                 {
@@ -83,9 +82,10 @@ namespace E_VotingSystem.Controllers
 
                 }
 
-                HttpContext.Session.Set<ModUser>("LoggedinUser", l_ModloggedInUser);
+                    HttpContext.Session.Set<ModUser>("LoggedinUser", l_ModloggedInUser);
 
-                return RedirectToAction("Index", "OTP", l_ModloggedInUser);
+                //return RedirectToAction("Index", "OTP", l_ModloggedInUser);
+                return RedirectToAction("Index", "Profile", l_ModloggedInUser);
             }
 
             l_SqlConnection.Close();
