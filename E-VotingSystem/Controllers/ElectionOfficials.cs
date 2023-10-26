@@ -1,5 +1,4 @@
-﻿using E_VotingSystem.ConnectionString;
-using E_VotingSystem.Models;
+﻿using E_VotingSystem.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.SqlClient;
@@ -19,7 +18,7 @@ namespace E_VotingSystem.Controllers
 
 		void FncConnectionString()
 		{
-            l_SqlConnection.ConnectionString = ConnectionHelper.FncGetConnectionString();
+            l_SqlConnection.ConnectionString = new CmConnectionHelper().FncGetConnectionString();
         }
 
 		[HttpPost]

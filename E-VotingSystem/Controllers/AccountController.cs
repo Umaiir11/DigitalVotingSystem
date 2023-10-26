@@ -1,4 +1,4 @@
-﻿using E_VotingSystem.ConnectionString;
+﻿
 using E_VotingSystem.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.SqlClient;
@@ -20,93 +20,105 @@ namespace E_VotingSystem.Controllers
 
         void FncConnectionString()
         {
-            l_SqlConnection.ConnectionString = ConnectionHelper.FncGetConnectionString();
+            l_SqlConnection.ConnectionString = new CmConnectionHelper().FncGetConnectionString();
 
         }
 
         [HttpPost]
         public ActionResult Verify(ModUser lModUser)
         {
-            DalInsertVoting l_DalInsertVoting = new DalInsertVoting();
-            FncConnectionString();
-            l_SqlConnection.Open();
-            l_SqlCommand.Connection = l_SqlConnection;
-            l_SqlCommand.CommandText = "SELECT * FROM Vw_TBU_Members WHERE MembershipID = @MembershipID AND Password = @Password";
-            l_SqlCommand.Parameters.AddWithValue("@MembershipID", lModUser.MembershipID);
-            l_SqlCommand.Parameters.AddWithValue("@Password", lModUser.Password);
-            l_SqlDataReader = l_SqlCommand.ExecuteReader();
-
-            if (l_SqlDataReader.Read())
+            try
             {
-                ModUser l_ModloggedInUser = new ModUser
+
+                DalInsertVoting l_DalInsertVoting = new DalInsertVoting();
+                FncConnectionString();
+                l_SqlConnection.Open();
+                l_SqlCommand.Connection = l_SqlConnection;
+                l_SqlCommand.CommandText = "SELECT * FROM Vw_TBU_Members WHERE MembershipID = @MembershipID AND Password = @Password";
+                l_SqlCommand.Parameters.AddWithValue("@MembershipID", lModUser.MembershipID);
+                l_SqlCommand.Parameters.AddWithValue("@Password", lModUser.Password);
+                l_SqlDataReader = l_SqlCommand.ExecuteReader();
+
+                if (l_SqlDataReader.Read())
                 {
-                    ImageLocation = l_SqlDataReader["ImageLocation"] as string,
-                    ExRegionSeats = l_SqlDataReader["ExCouncilSeats"] as string,
-                    LcRegionSeats = l_SqlDataReader["LcCouncilSeats"] as string,
-                    PKGUID = l_SqlDataReader["PKGUID"] as string,
-                    MembershipID = l_SqlDataReader["MembershipID"] as string,
-                    MemberName = l_SqlDataReader["MemberName"] as string,
-                    Address1 = l_SqlDataReader["Address1"] as string,
-                    Address2 = l_SqlDataReader["Address2"] as string,
-                    Email = l_SqlDataReader["Email"] as string,
-                    FounderMembers = l_SqlDataReader["FounderMembers"] as string,
-                    LifeAndAnnualMembers = l_SqlDataReader["LifeAndAnnualMembers"] as string,
-                    CompanysName = l_SqlDataReader["CompanysName"] as string,
-                    Region = l_SqlDataReader["Region"] as string,
-                    Password = lModUser.Password, // Set the password from the user input
-                    Mobile = l_SqlDataReader["Mobile"] as string,
-                    ContactNo = l_SqlDataReader["ContactNo"] as int?
+                    ModUser l_ModloggedInUser = new ModUser
+                    {
+                        ImageLocation = l_SqlDataReader["ImageLocation"] as string,
+                        ExRegionSeats = l_SqlDataReader["ExCouncilSeats"] as string,
+                        LcRegionSeats = l_SqlDataReader["LcCouncilSeats"] as string,
+                        PKGUID = l_SqlDataReader["PKGUID"] as string,
+                        MembershipID = l_SqlDataReader["MembershipID"] as string,
+                        MemberName = l_SqlDataReader["MemberName"] as string,
+                        Address1 = l_SqlDataReader["Address1"] as string,
+                        Address2 = l_SqlDataReader["Address2"] as string,
+                        Email = l_SqlDataReader["Email"] as string,
+                        FounderMembers = l_SqlDataReader["FounderMembers"] as string,
+                        LifeAndAnnualMembers = l_SqlDataReader["LifeAndAnnualMembers"] as string,
+                        CompanysName = l_SqlDataReader["CompanysName"] as string,
+                        Region = l_SqlDataReader["Region"] as string,
+                        Password = lModUser.Password, // Set the password from the user input
+                        Mobile = l_SqlDataReader["Mobile"] as string,
+                        ContactNo = l_SqlDataReader["ContactNo"] as int?
 
 
-                };
-                l_SqlConnection.Close();
+                    };
+                    l_SqlConnection.Close();
 
 
-                if (String.IsNullOrEmpty(l_ModloggedInUser.Mobile))
-                {
-                    return View("ErrorMobile");
-                }
+                    if (String.IsNullOrEmpty(l_ModloggedInUser.Mobile))
+                    {
+                        return View("ErrorMobile");
+                    }
 
-                int? lUserCount = l_DalInsertVoting.FncGetRecordCountForUser(l_ModloggedInUser.PKGUID!, l_SqlConnection.ConnectionString);
+                    int? lUserCount = l_DalInsertVoting.FncGetRecordCountForUser(l_ModloggedInUser.PKGUID!, l_SqlConnection.ConnectionString);
 
-                int l_ExSeatsCount = int.Parse(l_ModloggedInUser.ExRegionSeats ?? "0");
-                int l_LcSeatsCount = int.Parse(l_ModloggedInUser.LcRegionSeats ?? "0");
-                int? TotalVotes = l_ExSeatsCount + l_LcSeatsCount;
+                    int l_ExSeatsCount = int.Parse(l_ModloggedInUser.ExRegionSeats ?? "0");
+                    int l_LcSeatsCount = int.Parse(l_ModloggedInUser.LcRegionSeats ?? "0");
+                    int? TotalVotes = l_ExSeatsCount + l_LcSeatsCount;
 
 
-                if  (lUserCount > TotalVotes)
-                {
+                    if (lUserCount > TotalVotes)
+                    {
 
-                    TempData["ErrorMessage"] = l_ModloggedInUser.MemberName;
-                    return View("Index");
+                        TempData["ErrorMessage"] = l_ModloggedInUser.MemberName;
+                        return View("Index");
 
-                }
+                    }
 
                     HttpContext.Session.Set<ModUser>("LoggedinUser", l_ModloggedInUser);
 
-                //return RedirectToAction("Index", "OTP", l_ModloggedInUser);
-                return RedirectToAction("Index", "Profile", l_ModloggedInUser);
-            }
+                    //return RedirectToAction("Index", "OTP", l_ModloggedInUser);
+                    return RedirectToAction("Index", "Profile", l_ModloggedInUser);
+                }
 
-            l_SqlConnection.Close();
-            return View("ErrorPassword"); // Password is incorrect
+                l_SqlConnection.Close();
+                return View("ErrorPassword"); // Password is incorrect
+            }
+            catch (Exception ex)
+            {
+                new CmConnectionHelper().WriteToFile(ex.Message);
+                return View("Index");
+            }
         }
 
         [HttpGet]
-
         public ActionResult CandidateVoteInfo()
         {
-            //db call
+            try
+            {
 
-            FncConnectionString();
-            DalInsertVoting l_dalInsertVoting = new DalInsertVoting();
+                FncConnectionString();
+                DalInsertVoting l_dalInsertVoting = new DalInsertVoting();
 
-            List<ModCandidateVoteInfo> l_ListModCandidateVoteInfo = new List<ModCandidateVoteInfo>();
-            l_ListModCandidateVoteInfo = l_dalInsertVoting.FncGetResultOfCandidates(l_SqlConnection.ConnectionString);
-            return View("CandidateVoteInfo", l_ListModCandidateVoteInfo);
-
+                List<ModCandidateVoteInfo> l_ListModCandidateVoteInfo = new List<ModCandidateVoteInfo>();
+                l_ListModCandidateVoteInfo = l_dalInsertVoting.FncGetResultOfCandidates(l_SqlConnection.ConnectionString);
+                return View("CandidateVoteInfo", l_ListModCandidateVoteInfo);
+            }
+            catch (Exception ex)
+            {
+                new CmConnectionHelper().WriteToFile(ex.Message);
+                return View("Index");
+            }
         }
-
-
     }
 }

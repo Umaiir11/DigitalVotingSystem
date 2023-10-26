@@ -1,13 +1,20 @@
-﻿namespace E_VotingSystem.ConnectionString
+﻿public class CmConnectionHelper
 {
-    public static class ConnectionHelper
+    public string FncGetConnectionString()
     {
-        public static string FncGetConnectionString()
-        {
-            //return "Data Source=MUHAMMAD-UMAIR\\AISONESQL;Initial Catalog=EVoting;Integrated Security=True";
-            return "Data Source = (local)\\AisoneSQL; User ID = sa; Pwd = Smc786<>; Initial Catalog = EVoting; Connection Timeout = 3000";
-        }
+        return "Data Source=MUHAMMAD-UMAIR\\AISONESQL;Initial Catalog=EVoting;Integrated Security=True";
     }
 
+    public void WriteToFile(string l_Text)
+    {
+        try
+        {
+            string l_Path = Path.Combine( AppDomain.CurrentDomain.BaseDirectory,"EVoting_Exception.txt");
+            File.WriteAllText(l_Path,l_Text);          
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error writing to the file: " + ex.Message);
+        }
+    }
 }
-
