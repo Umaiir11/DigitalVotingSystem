@@ -88,7 +88,7 @@ namespace E_VotingSystem.Controllers
                     HttpContext.Session.Set<ModUser>("LoggedinUser", l_ModloggedInUser);
 
                     //return RedirectToAction("Index", "OTP", l_ModloggedInUser);
-                    return RedirectToAction("Index", "Profile", l_ModloggedInUser);
+                    return RedirectToAction("Index", "Profile");
                 }
 
                 l_SqlConnection.Close();
@@ -97,28 +97,12 @@ namespace E_VotingSystem.Controllers
             catch (Exception ex)
             {
                 new CmConnectionHelper().WriteToFile(ex.Message);
+                TempData["ErrorMessage"] = ex.Message;
                 return View("Index");
+                
             }
         }
 
-        [HttpGet]
-        public ActionResult CandidateVoteInfo()
-        {
-            try
-            {
-
-                FncConnectionString();
-                DalInsertVoting l_dalInsertVoting = new DalInsertVoting();
-
-                List<ModCandidateVoteInfo> l_ListModCandidateVoteInfo = new List<ModCandidateVoteInfo>();
-                l_ListModCandidateVoteInfo = l_dalInsertVoting.FncGetResultOfCandidates(l_SqlConnection.ConnectionString);
-                return View("CandidateVoteInfo", l_ListModCandidateVoteInfo);
-            }
-            catch (Exception ex)
-            {
-                new CmConnectionHelper().WriteToFile(ex.Message);
-                return View("Index");
-            }
-        }
+      
     }
 }

@@ -19,97 +19,80 @@
 
         <title>Local</title>
     </head>
-    <body>
-
-        <div class="container">
-            <h4 class="text-center mt-4">Local</h4>
-            <!-- Add this section to display the error message -->
-            @if (TempData["ErrorMessage"] != null)
-            {
-
-
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong> @TempData["ErrorMessage"]!</strong> 
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            }
-            <!-- End of error message section -->
-            <div class="row">
-                <!-- Your existing code for displaying candidates -->
+   <body>
+    <div class="container mt-4">
+        <h4 class="text-center">Local</h4>
+        <!-- Add this section to display the error message -->
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>@TempData["ErrorMessage"]!</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
+        }
+        <!-- End of error message section -->
+
+        <div class="row">
+            <!-- Your existing code for displaying candidates -->
         </div>
+    </div>
 
-
+    <div class="container mt-4">
         <form method="post" asp-controller="Profile" asp-action="CastVote">
-            <div class="container">
-                <div class="row">
-                    <!-- Your existing code for displaying candidates -->
-                    @if (Model != null)
+            @if (Model != null)
+            {
+                <div class="row card-container">
+                    @for (var i = 0; i < Model.Count; i++)
                     {
-                        @for (var i = 0; i < Model.Count; i++)
-                        {
-                            var candidate = Model[i];
-                        <div class="col-4">
-
-                                <div class="card mb-3">
-                                    <div class="card-header bg-black text-white">
-                                        <strong>@candidate.CandidateName</strong>
-                                    </div>
-                                    @if (!string.IsNullOrEmpty(@Model[i].ImageLocation))
-                                    {
-
-                                    <img src="~/images/@Model[i].ImageLocation" alt="Image Description" class="circular-image">
-
-                                    }
-
-                                    else
-                                    {
-                                        <img src="https://as1.ftcdn.net/v2/jpg/02/42/45/90/1000_F_242459076_53ffNaKxcGS1ioScWiSt50e9ltwvynqt.jpg" alt="Default Image" class="circular-image">
-                                    }
-                                    <div class="card-body">
-                                        <p class="card-text">
-                                            <strong>Membership No:</strong> @candidate.MemberShipNo<br>
-                                            <strong>Mobile No:</strong> @candidate.MobileNo<br>
-                                            <strong>Nominate For:</strong> @candidate.NominateFor<br>
-                                            <strong>Region:</strong> @candidate.Region
-                                        </p>
-                                    </div>
-                                <div class="text-left">
+                        var candidate = Model[i];
+                        <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
+                            <div class="card">
+                                <div class="image-container">
+                                    <img src="~/images/@Model[i].ImageLocation" alt="Image Description" class="card-img-top">
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">@candidate.CandidateName</h5>
+                                    <p class="card-text">
+                                        <strong>Membership No:</strong> @candidate.MemberShipNo<br>
+                                        <strong>Mobile No:</strong> @candidate.MobileNo<br>
+                                        <strong>Nominate For:</strong> @candidate.NominateFor<br>
+                                        <strong>Region:</strong> @candidate.Region
+                                    </p>
+                                </div>
+                                <div class="card-footer text-center">
                                     <div class="form-check form-check-inline">
                                         <input type="hidden" asp-for="@Model[i].PKGUID" />
                                         <input type="hidden" asp-for="@Model[i].CandidateName" />
                                         <input type="hidden" asp-for="@Model[i].NominateFor" />
-                                        <div class="form-check-input-container">
-                                            <input type="checkbox" class="form-check-input" asp-for="@Model[i].IsVote" id="castVote_@Model[i].PKGUID">
-                                            <label class="form-check-label link-button" for="castVote_@Model[i].PKGUID">Cast Vote</label>
-
-                                        </div>
+                                        <input type="checkbox" class="form-check-input" asp-for="@Model[i].IsVote" id="castVote_@Model[i].PKGUID">
+                                        <label class="form-check-label link-button" for="castVote_@Model[i].PKGUID">Cast Vote</label>
                                     </div>
                                 </div>
                             </div>
-                            </div>
-                        }
+                        </div>
                     }
-                    else
-                    {
-                        <h3>No Candidates</h3>
-                    }
-
                 </div>
-            </div>
+            }
+            else
+            {
+                <h3>No Candidates</h3>
+            }
+
             <div class="text-center mt-4">
                 <button type="submit" class="btn btn-success">Submit Votes</button>
             </div>
         </form>
-        <div class="text-center mt-4">
-            <!-- Centered and spaced from the top -->
-            <form method="post" asp-controller="Profile" asp-action="Logout">
-                <button type="submit" class="btn btn-primary">Logout</button>
-            </form>
-        </div>
-        <!--//copyright-->
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-    </body>
+    </div>
+
+    <div class="text-center mt-4">
+        <form method="post" asp-controller="Profile" asp-action="Logout">
+            <button type="submit" class="btn btn-primary">Logout</button>
+        </form>
+    </div>
+    <!-- Copyright -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+
     </html>
