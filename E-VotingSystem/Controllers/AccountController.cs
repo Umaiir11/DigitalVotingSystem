@@ -41,8 +41,8 @@ namespace E_VotingSystem.Controllers
                 ModUser l_ModloggedInUser = new ModUser
                 {
                     ImageLocation = l_SqlDataReader["ImageLocation"] as string,
-                    ExRegionSeats= l_SqlDataReader["ExCouncilSeats"] as string,
-                    LcRegionSeats    = l_SqlDataReader["LcCouncilSeats"] as string,
+                    ExRegionSeats = l_SqlDataReader["ExCouncilSeats"] as string,
+                    LcRegionSeats = l_SqlDataReader["LcCouncilSeats"] as string,
                     PKGUID = l_SqlDataReader["PKGUID"] as string,
                     MembershipID = l_SqlDataReader["MembershipID"] as string,
                     MemberName = l_SqlDataReader["MemberName"] as string,
@@ -57,7 +57,7 @@ namespace E_VotingSystem.Controllers
                     Mobile = l_SqlDataReader["Mobile"] as string,
                     ContactNo = l_SqlDataReader["ContactNo"] as int?
 
-                    
+
                 };
                 l_SqlConnection.Close();
 
@@ -69,7 +69,13 @@ namespace E_VotingSystem.Controllers
 
                 int? lUserCount = l_DalInsertVoting.FncGetRecordCountForUser(l_ModloggedInUser.PKGUID!, l_SqlConnection.ConnectionString);
 
-                if (lUserCount > 1)
+                int l_ExSeatsCount = int.Parse(l_ModloggedInUser.ExRegionSeats ?? "0");
+                int l_LcSeatsCount = int.Parse(l_ModloggedInUser.LcRegionSeats ?? "0");
+                int? TotalVotes = l_ExSeatsCount + l_LcSeatsCount;
+
+               // if (lUserCount > int.Parse(l_ModloggedInUser.ExRegionSeats!) || lUserCount > int.Parse(l_ModloggedInUser.LcRegionSeats!))
+
+                if  (lUserCount > TotalVotes)
                 {
 
                     TempData["ErrorMessage"] = l_ModloggedInUser.MemberName;
@@ -97,10 +103,10 @@ namespace E_VotingSystem.Controllers
 
             List<ModCandidateVoteInfo> l_ListModCandidateVoteInfo = new List<ModCandidateVoteInfo>();
             l_ListModCandidateVoteInfo = l_dalInsertVoting.FncGetResultOfCandidates(l_SqlConnection.ConnectionString);
-			return View("CandidateVoteInfo", l_ListModCandidateVoteInfo);
+            return View("CandidateVoteInfo", l_ListModCandidateVoteInfo);
 
-		}
+        }
 
 
-	}
+    }
 }
